@@ -63,9 +63,12 @@ const Formulario = (props) => {
                 actualizarEquipo={actualizarEquipo}
                 equipos={props.equipos}
             />
-            <Boton>
-                Crear
-            </Boton>
+            <div className="botonForm">
+                <Boton>
+                    Crear
+                </Boton>
+            </div>
+           
         </form>
         <form onSubmit={manejarNuevoEquipo}>
             <h2>Rellena el formulario para crear el equipo.</h2>
@@ -84,7 +87,11 @@ const Formulario = (props) => {
                 actualizarValor={actualizarColor}
                 type="color"
             />
+            <div className="botonForm">
+                
             <Boton>Registrar equipo</Boton>
+
+            </div>
         </form>
     </section>
 }
