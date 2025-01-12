@@ -10,8 +10,6 @@ const Campo = (props) => {
     const manejarCambio = (e) => {
         props.actualizarValor(e.target.value.trimStart())
     }
-
-
     return <div className={`campo campo-${type}`}>
         <label>{props.titulo}</label>
         <input

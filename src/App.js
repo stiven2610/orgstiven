@@ -1,141 +1,50 @@
-import { useState } from 'react';
-import { v4 as uuid } from "uuid"
-import './App.css';
-import Header from "./componentes/Header/Header"
-import Formulario from './componentes/Formulario/Formulario';
-import MiOrg from './componentes/MiOrg';
-import Equipo from './componentes/Equipo';
-import Footer from './componentes/Footer';
-import Colaborador from './componentes/Colaborador';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import "./App.css";
+import Login from "./login/Login";
+import Footer from "./componentes/Footer";
+import ProtectedRoute from "./routes/protectedRoute";
+import VistaEmpresa from "./vistaEmpresa/vistaEmpresa";
+import Header from "./componentes/Header/Header";
+import { useEffect, useState } from "react";
+import Formulario from "./componentes/Formulario/Formulario";
 
 function App() {
-  const [mostrarFormulario, actualizarMostrar] = useState(false)
-  const [colaboradores, actualizarColaboradores] = useState([
-  {
-    id: uuid(),
-    equipo: "Innovación y Gestión",
-    foto: "https://github.com/JoseDarioGonzalezCha.png",
-    nombre: "Jose Gonzalez",
-    puesto: "Dev FullStack",
-    fav: false
-  }])
-/*
-------------------BASE DE DATOS---------------------
-*******************COLABORADOR**********************
-ID
-equipo
-foto
-nombre
-puesto
-fav fav  (esto es para poder darle like al colaborador)
+  const [login, setLogin] = useState(sessionStorage.getItem("login") === "true");
 
-**********************EQUIPO*************************
-id
-empresa
-titulo
-colorPrimario
-colorSecundario
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setLogin(sessionStorage.getItem("login") === "true");
+    };
 
-**********************EMPRESA**********************
-id
-nombre
-correo
-contraseña
-*/
-  const [equipos, actualizarEquipos] = useState([
-    {
-      id: uuid(),
-      titulo: "Programación",
-      colorPrimario: "#57C278",
-      colorSecundario: "#D9F7E9"
-    },
+    window.addEventListener("storage", handleStorageChange);
 
-  ])
-
-
-  //Ternario --> condicion ? seMuestra : noSeMuestra
-  // condicion && seMuestra
-
-  const cambiarMostrar = () => {
-    actualizarMostrar(!mostrarFormulario)
-  }
-
-  //Registrar colaborador
-
-  const registrarColaborador = (colaborador) => {
-    console.log("Nuevo colaborador", colaborador)
-    //Spread operator
-    actualizarColaboradores([...colaboradores, colaborador])
-  }
-
-  //Eliminar colaborador
-  const eliminarColaborador = (id) => {
-    console.log("Eliminar colaborador", id)
-    const nuevosColaboradores = colaboradores.filter((colaborador) => colaborador.id !== id)
-    actualizarColaboradores(nuevosColaboradores)
-  }
-
-  //Actualizar color de equipo
-  const actualizarColor = (color, id) => {
-    console.log("Actualizar: ", color, id)
-    const equiposActualizados = equipos.map((equipo) => {
-      if (equipo.id === id) {
-        equipo.colorPrimario = color
-      }
-
-      return equipo
-    })
-
-    actualizarEquipos(equiposActualizados)
-  }
-
-  //Crear equipo
-  const crearEquipo = (nuevoEquipo) => {
-    console.log(nuevoEquipo)
-    actualizarEquipos([...equipos, { ...nuevoEquipo, id: uuid() }])
-  }
-
-  const like = (id) => {
-    console.log("like", id)
-    const colaboradoresActualizados = colaboradores.map((colaborador) => {
-      if (colaborador.id === id) {
-        colaborador.fav = !colaborador.fav
-      }
-      return colaborador
-    })
-
-    actualizarColaboradores(colaboradoresActualizados)
-  }
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
     <div>
       <Header />
-      {/* {mostrarFormulario ? <Formulario /> : <></>} */}
-      {
-        mostrarFormulario && <Formulario
-          equipos={equipos.map((equipo) => equipo.titulo)}
-          registrarColaborador={registrarColaborador}
-          crearEquipo={crearEquipo}
-        />
-      }
-
-      <MiOrg cambiarMostrar={cambiarMostrar} />
-
-      {
-        equipos.map((equipo) => <Equipo
-          datos={equipo}
-          key={equipo.titulo}
-          colaboradores={colaboradores.filter(colaborador => colaborador.equipo === equipo.titulo)}
-          eliminarColaborador={eliminarColaborador}
-          actualizarColor={actualizarColor}
-          like={like}
-        />
-        )
-      }
-
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={login ? <Navigate to="/admin" /> : <Login setLogin={setLogin} />}
+          />
+          <Route path="/admin" element={<ProtectedRoute isLoggedIn={login} />}>
+            <Route index element={<VistaEmpresa />} />
+            <Route path="/admin/crearColaborador" element= {<Formulario/>}/>
+            <Route path="/admin/crearEquipo" element= { ""}/>
+          </Route>
+        </Routes>
+      </Router>
       <Footer />
-
-
     </div>
   );
 }
