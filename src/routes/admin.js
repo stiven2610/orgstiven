@@ -5,7 +5,7 @@ function Admin() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    sessionStorage.removeItem('login');
+    sessionStorage.removeItem('token');
     window.location.href = '/'; // Redirigir al login
   };
 

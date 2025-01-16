@@ -1,25 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Campo from "../componentes/Campo";
-import Header from "../componentes/Header/Header";
 import Boton from "../componentes/Boton";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ setLogin }) => {
   const [correo, actualizarCorreo] = useState("");
   const [contraseña, actualizarContraseña] = useState("");
-  const correoPrueba = "stivenrozo1@gmail.com";
-  const contraseñaPrueba = "123456";
+
   const navigate = useNavigate();
 
-  const loguear = (e) => {
+  const loguear = async (e) => {
     e.preventDefault();
-    if (contraseñaPrueba === contraseña && correoPrueba === correo) {
-      sessionStorage.setItem("login", true);
-      setLogin(true); // Actualiza el estado login
-      navigate("/admin");
-    } else {
-      console.log("Datos incorrectos");
-    }
+    //api login 
+ try {
+  const response = await fetch("http://localhost:3001/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ correo, contraseña }),
+  }); 
+  const data = await response.json(); 
+  if (data.token) {
+    setLogin(true);
+    sessionStorage.setItem("token", data.token);
+    navigate("/dashboard");
+  } else {
+    alert("Usuario o contraseña incorrectos");
+  }
+} catch (error) {
+console.log("error al iniciar sesión",error);
+ }
+    
   };
 
   return (

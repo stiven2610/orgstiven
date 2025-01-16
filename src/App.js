@@ -13,11 +13,11 @@ import { useEffect, useState } from "react";
 import Formulario from "./componentes/Formulario/Formulario";
 
 function App() {
-  const [login, setLogin] = useState(sessionStorage.getItem("login") === "true");
+  const [login, setLogin] = useState(!!sessionStorage.getItem("token"));
 
   useEffect(() => {
     const handleStorageChange = () => {
-      setLogin(sessionStorage.getItem("login") === "true");
+      setLogin(!!sessionStorage.getItem("token"));
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -38,8 +38,8 @@ function App() {
           />
           <Route path="/admin" element={<ProtectedRoute isLoggedIn={login} />}>
             <Route index element={<VistaEmpresa />} />
-            <Route path="/admin/crearColaborador" element= {<Formulario/>}/>
-            <Route path="/admin/crearEquipo" element= { ""}/>
+            <Route path="/admin/crearColaborador" element={<Formulario />} />
+            <Route path="/admin/crearEquipo" element={""} />
           </Route>
         </Routes>
       </Router>
