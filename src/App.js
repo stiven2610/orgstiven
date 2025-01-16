@@ -4,7 +4,6 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import "./App.css";
 import Login from "./login/Login";
 import Footer from "./componentes/Footer";
 import ProtectedRoute from "./routes/protectedRoute";
