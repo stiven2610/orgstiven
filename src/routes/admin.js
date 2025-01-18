@@ -16,7 +16,8 @@ function Admin() {
   return (
     <div className="admin-container">
       <nav className="admin-nav">
-        <Link to="/admin/crearColaborador">👥 Crear colaborador o Equipo</Link> 
+        <Link to="/admin/crearColaborador">👥 Crear colaborador</Link> 
+        <Link to="/admin/crearEquipo">👥 Crear Equipo</Link> 
         <Link to="/admin/">👤Usuarios</Link> 
         <Link to="/admin/">🛠 Configuración</Link>
       </nav>

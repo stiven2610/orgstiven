@@ -8,8 +8,9 @@ import { obtenerPayload } from "../../login/Login";
 import { API } from "../../config";
 
 const Formulario = () => {
+  const [error, setError] = useState({});
   const token = sessionStorage.getItem("token");
- const datos =  obtenerPayload(token);
+  const datos = obtenerPayload(token);
   const [colaborador, setColaborador] = useState({
     documento: "",
     nombre: "",
@@ -19,17 +20,19 @@ const Formulario = () => {
 
   const [equipo, setEquipo] = useState({
     titulo: "",
-    empresa:datos.empresa.id,
+    empresa: datos.empresa.id,
     colorPrimario: "",
-    colorSecundario:"#00000",
+    colorSecundario: "#00000",
   });
 
   const actualizarColaborador = (campo, valor) => {
     setColaborador({ ...colaborador, [campo]: valor });
+    setError((prevError) => ({ ...prevError, [campo]: "" }));
   };
 
   const actualizarEquipo = (campo, valor) => {
     setEquipo({ ...equipo, [campo]: valor });
+    setError((prevError) => ({ ...prevError, [campo]: "" }));
   };
 
   const crearColaborador = (e) => {
@@ -39,6 +42,24 @@ const Formulario = () => {
 
   const crearEquipo = async (e) => {
     e.preventDefault();
+    let hasError = false;
+    let newError = {};
+
+    if (!equipo.titulo) {
+      newError.titulo = "El campo es obligatorio";
+      hasError = true;
+    }
+
+    if (!equipo.colorPrimario) {
+      newError.colorPrimario = "El campo es obligatorio";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setError(newError);
+      return;
+    }
+
     try {
       const response = await axios.post(API + "equipo", equipo, {
         headers: {
@@ -54,16 +75,18 @@ const Formulario = () => {
   return (
     <>
       <Admin />
-      <section className="formulario">
-        <form onSubmit={crearColaborador}>
+      <section className="contenedor-formulario">
+        <form className="formulario" onSubmit={crearColaborador}>
           <h2>Rellena el formulario para crear el colaborador.</h2>
           <Campo
             titulo="Documento"
             placeholder="Ingresar documento"
             type="number"
-            required
             valor={colaborador.documento}
-            actualizarValor={(valor) => actualizarColaborador("documento", valor)}
+            actualizarValor={(valor) =>
+              actualizarColaborador("documento", valor)
+            }
+            error={error.documento}
           />
           <Campo
             titulo="Nombre"
@@ -71,6 +94,7 @@ const Formulario = () => {
             required
             valor={colaborador.nombre}
             actualizarValor={(valor) => actualizarColaborador("nombre", valor)}
+            error={error.nombre}
           />
           <Campo
             titulo="Puesto"
@@ -78,6 +102,7 @@ const Formulario = () => {
             required
             valor={colaborador.puesto}
             actualizarValor={(valor) => actualizarColaborador("puesto", valor)}
+            error={error.puesto}
           />
           <Campo
             titulo="Foto"
@@ -85,8 +110,9 @@ const Formulario = () => {
             required
             valor={colaborador.foto}
             actualizarValor={(valor) => actualizarColaborador("foto", valor)}
+            error={error.foto}
           />
-        
+
           <div className="botonForm">
             <Boton>Crear</Boton>
           </div>
@@ -97,8 +123,8 @@ const Formulario = () => {
           <Campo
             titulo="Titulo"
             placeholder="Ingresar titulo"
-            required
             valor={equipo.titulo}
+            error={error.titulo}
             actualizarValor={(valor) => actualizarEquipo("titulo", valor)}
           />
           <Campo
@@ -106,8 +132,11 @@ const Formulario = () => {
             placeholder="Ingresar el color en Hex"
             required
             valor={equipo.colorPrimario}
-            actualizarValor={(valor) => actualizarEquipo("colorPrimario", valor)}
+            actualizarValor={(valor) =>
+              actualizarEquipo("colorPrimario", valor)
+            }
             type="color"
+            error={error.colorPrimario}
           />
           <div className="botonForm">
             <Boton>Registrar equipo</Boton>

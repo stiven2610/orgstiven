@@ -1,5 +1,13 @@
+
+.contenedor-formulario{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .formulario{
     display: flex;
+    width: 100%;
     justify-content: space-evenly;
     margin: 30px ;
     flex-wrap: wrap;

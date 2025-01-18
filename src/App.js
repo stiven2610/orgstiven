@@ -12,6 +12,8 @@ import Header from "./componentes/Header/Header";
 import { useEffect, useState } from "react";
 import Formulario from "./componentes/Formulario/Formulario";
 import { Login } from "./login/Login";
+import FormularioColaborador from "./componentes/Formulario/FormularioColaborador";
+import FormularioEquipo from "./componentes/Formulario/FormularioEquipo";
 
 function App() {
   const [login, setLogin] = useState(!!sessionStorage.getItem("token"));
@@ -39,7 +41,8 @@ function App() {
           />
           <Route path="/admin" element={<ProtectedRoute isLoggedIn={login} />}>
             <Route index element={<VistaEmpresa />} />
-            <Route path="/admin/crearColaborador" element={<Formulario />} />
+            <Route path="/admin/crearColaborador" element={<FormularioColaborador />} />
+            <Route path="/admin/crearEquipo" element={<FormularioEquipo/>}/>
             <Route path="/admin/crearEquipo" element={""} />
           </Route>
         </Routes>
