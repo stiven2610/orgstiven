@@ -9,6 +9,7 @@
     "axios": "^1.7.9",
     "dom": "^0.0.3",
     "hex-to-rgba": "^2.0.1",
+    "jwt-decode": "^4.0.0",
     "org": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.2.0",
