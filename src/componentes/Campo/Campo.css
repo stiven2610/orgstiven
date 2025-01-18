@@ -2,7 +2,14 @@
     margin: 24px 0;
     font-family: 'Montserrat', sans-serif;
 }
-
+.campo-error {
+    border: 1px solid red;
+  }
+  
+.input-error{
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
 .campo label{
     font-family: 'Montserrat', sans-serif;
     font-size: 18px;

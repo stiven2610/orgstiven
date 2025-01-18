@@ -1,25 +1,29 @@
-import { useState } from "react"
-import "./Campo.css"
+import "./Campo.css";
 
 const Campo = (props) => {
-    const placeholderModificado = `${props.placeholder}...`
+  const placeholderModificado = `${props.placeholder}...`;
 
-    //Destructuracion 
-    const { type = "text" } = props
+  // Destructuración
+  const { type = "text", error } = props;
 
-    const manejarCambio = (e) => {
-        props.actualizarValor(e.target.value.trimStart())
-    }
-    return <div className={`campo campo-${type}`}>
-        <label>{props.titulo}</label>
-        <input
-            placeholder={placeholderModificado}
-            required={props.required}
-            value={props.valor}
-            onChange={manejarCambio}
-            type={type}
-        />
+  const manejarCambio = (e) => {
+    props.actualizarValor(e.target.value.trimStart());
+  };
+
+  return (
+    <div className={`campo campo-${type} ${error ? "campo-error" : ""}`}>
+      <label>{props.titulo}</label>
+      <input
+        placeholder={placeholderModificado}
+        required={props.required}
+        value={props.valor}
+        onChange={manejarCambio}
+        type={type}
+        className={error ? "input-error" : ""}
+      />
+      {error && <span className="error">{error}</span>}
     </div>
-}
+  );
+};
 
-export default Campo
+export default Campo;

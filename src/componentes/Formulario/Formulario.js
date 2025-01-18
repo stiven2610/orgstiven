@@ -10,7 +10,6 @@ import { API } from "../../config";
 const Formulario = () => {
   const token = sessionStorage.getItem("token");
  const datos =  obtenerPayload(token);
- console.log(datos);
   const [colaborador, setColaborador] = useState({
     documento: "",
     nombre: "",

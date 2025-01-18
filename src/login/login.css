@@ -1,3 +1,11 @@
-.contenedor {
-    width:60em;
+.formulario-error{
+    border-color: #e6071d;
+    color: #ff0019;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.error{
+    color: red;
+    font-size:16px;
+    display: block;
 }
